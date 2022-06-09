@@ -10,7 +10,7 @@
 
 思路：将传入的对象作为原型
 
-```
+```javascript
 function create(obj) {
   function F() {}
   F.prototype = obj
@@ -34,7 +34,7 @@ instanceof 运算符用于判断构造函数的 prototype 属性是否出现在�
 
 具体实现：
 
-```
+```javascript
 function myInstanceof(left, right) {
   let proto = Object.getPrototypeOf(left), // 获取对象的原型
       prototype = right.prototype; // 获取构造函数的 prototype 对象
@@ -61,7 +61,7 @@ function myInstanceof(left, right) {
 
 （4）判断函数的返回值类型，如果是值类型，返回创建的对象。如果是引用类型，就返回这个引用类型的对象。
 
-```
+```javascript
 function objectFactory() {
   let newObject = null;
   let constructor = Array.prototype.shift.call(arguments);
@@ -86,7 +86,7 @@ objectFactory(构造函数, 初始化参数);
 
 ### 4. 手写 Promise
 
-```
+```javascript
 const PENDING = "pending";
 const RESOLVED = "resolved";
 const REJECTED = "rejected";
@@ -208,7 +208,7 @@ MyPromise.prototype.then = function(onResolved, onRejected) {
 - 承前：当前一个 `promise` 完成后，调用其 `resolve` 变更状态，在这个 `resolve` 里会依次调用 `callbacks` 里的回调，这样就执行了 `then` 里的方法了
 - 启后：上一步中，当 `then` 里的方法执行完成后，返回一个结果，如果这个结果是个简单的值，就直接调用新 `promise` 的 `resolve`，让其状态变更，这又会依次调用新 `promise` 的 `callbacks` 数组里的方法，循环往复。。如果返回的结果是个 `promise`，则需要等它完成之后再触发新 `promise` 的 `resolve`，所以可以在其结果的 `then` 里调用新 `promise` 的 `resolve`
 
-```
+```javascript
 then(onFulfilled, onReject){
     // 保存前一个promise的this
     const self = this; 
@@ -313,7 +313,7 @@ promiseAll([p3, p1, p2]).then(res => {
 
 该方法的参数是 Promise 实例数组, 然后其 then 注册的回调方法是数组中的某一个 Promise 的状态变为 fulfilled 的时候就执行. 因为 Promise 的状态**只能改变一次**, 那么我们只需要把 Promise.race 中产生的 Promise 对象的 resolve 方法, 注入到数组中的每一个 Promise 实例中的回调函数中即可.
 
-```
+```javascript
 Promise.race = function (args) {
   return new Promise((resolve, reject) => {
     for (let i = 0, len = args.length; i < len; i++) {
@@ -327,7 +327,7 @@ Promise.race = function (args) {
 
 函数防抖是指在事件被触发 n 秒后再执行回调，如果在这 n 秒内事件又被触发，则重新计时。这可以使用在一些点击请求的事件上，避免因为用户的多次点击向后端发送多次请求。
 
-```
+```javascript
 // 函数防抖的实现
 function debounce(fn, wait) {
   let timer = null;
@@ -354,7 +354,7 @@ function debounce(fn, wait) {
 
 函数节流是指规定一个单位时间，在这个单位时间内，只能有一次触发事件的回调函数执行，如果在同一个单位时间内某事件被触发多次，只有一次能生效。节流可以使用在 scroll 函数的事件监听上，通过事件节流来降低事件调用的频率。
 
-```
+```javascript
 // 函数节流的实现;
 function throttle(fn, delay) {
   let curTime = Date.now();
@@ -375,7 +375,7 @@ function throttle(fn, delay) {
 
 ### 10. 手写类型判断函数
 
-```
+```javascript
 function getType(value) {
   // 判断数据是 null 的情况
   if (value === null) {
@@ -406,7 +406,7 @@ call 函数的实现步骤：
 6. 删除刚才新增的属性。
 7. 返回结果。
 
-```
+```javascript
 // call函数实现
 Function.prototype.myCall = function(context) {
   // 判断调用对象
@@ -440,7 +440,7 @@ apply 函数的实现步骤：
 6. 删除刚才新增的属性
 7. 返回结果
 
-```
+```javascript
 // apply 函数实现
 Function.prototype.myApply = function(context) {
   // 判断调用对象是否为函数
@@ -473,7 +473,7 @@ bind 函数的实现步骤：
 3. 创建一个函数返回
 4. 函数内部使用 apply 来绑定函数调用，需要判断函数作为构造函数的情况，这个时候需要传入当前函数的 this 给 apply 调用，其余情况都传入指定的上下文对象。
 
-```
+```javascript
 // bind 函数实现
 Function.prototype.myBind = function(context) {
   // 判断调用对象是否为函数
@@ -497,7 +497,7 @@ Function.prototype.myBind = function(context) {
 
  函数柯里化指的是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
 
-```
+```javascript
 function curry(fn, args) {
   // 获取函数需要的参数长度
   let length = fn.length;

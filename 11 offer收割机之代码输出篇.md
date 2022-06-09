@@ -12,7 +12,7 @@
 
 ### 1. 代码输出结果
 
-```
+```javascript
 const promise = new Promise((resolve, reject) => {
   console.log(1);
   console.log(2);
@@ -35,7 +35,7 @@ promise.then 是微任务，它会在所有的宏任务执行完之后才会执�
 
 ### 2. 代码输出结果
 
-```
+```javascript
 const promise1 = new Promise((resolve, reject) => {
   console.log('promise1')
   resolve('resolve1')
@@ -73,7 +73,7 @@ resolve1
 
 ### 3. 代码输出结果
 
-```
+```javascript
 const promise = new Promise((resolve, reject) => {
   console.log(1);
   setTimeout(() => {
@@ -113,7 +113,7 @@ success
 
 ### 4. 代码输出结果
 
-```
+```javascript
 Promise.resolve().then(() => {
   console.log('promise1');
   const timer2 = setTimeout(() => {
@@ -153,7 +153,7 @@ timer2
 
 ### 5. 代码输出结果
 
-```
+```javascript
 const promise = new Promise((resolve, reject) => {
     resolve('success1');
     reject('error');
@@ -176,7 +176,7 @@ then：success1
 
 ### 6. 代码输出结果
 
-```
+```javascript
 Promise.resolve(1)
   .then(2)
   .then(Promise.resolve(3))
@@ -194,11 +194,11 @@ Promise.resolve方法的参数如果是一个原始值，或者是一个不具�
 
 
 
-then方法接受的参数是函数，而如果传递的并非是一个函数，它实际上会将其解释为then(null)，这就会导致前一个Promise的结果会传递下面。
+**then方法接受的参数是函数，而如果传递的并非是一个函数，它实际上会将其解释为then(null)，这就会导致前一个Promise的结果会传递下面。**
 
 ### 7. 代码输出结果
 
-```
+```javascript
 const promise1 = new Promise((resolve, reject) => {
   setTimeout(() => {
     resolve('success')
@@ -228,7 +228,7 @@ promise2 Promise {<rejected>: Error: error!!}
 
 ### 8. 代码输出结果
 
-```
+```javascript
 Promise.resolve(1)
   .then(res => {
     console.log(res);
@@ -257,7 +257,7 @@ Promise是可以链式调用的，由于每次调用 `.then` 或者 `.catch` 都
 
 ### 9. 代码输出结果
 
-```
+```javascript
 Promise.resolve().then(() => {
   return new Error('error!!!')
 }).then(res => {
@@ -277,7 +277,7 @@ Promise.resolve().then(() => {
 
 ### 10. 代码输出结果
 
-```
+```javascript
 const promise = Promise.resolve().then(() => {
   return promise;
 })
@@ -290,11 +290,11 @@ promise.catch(console.err)
 Uncaught (in promise) TypeError: Chaining cycle detected for promise #<Promise>
 ```
 
-这里其实是一个坑，`.then` 或 `.catch` 返回的值不能是 promise 本身，否则会造成死循环。
+这里其实是一个坑，`.then` 或 `.catch` 返回的值不能是 promise 本身，否则会造成**死循环**。
 
 ### 11. 代码输出结果
 
-```
+```javascript
 Promise.resolve(1)
   .then(2)
   .then(Promise.resolve(3))
@@ -315,7 +315,7 @@ Promise.resolve(1)
 
 ### 12. 代码输出结果
 
-```
+```javascript
 Promise.reject('err!!!')
   .then((res) => {
     console.log('success', res)
@@ -347,7 +347,7 @@ error err!!!
 
 但是，如果是像下面这样：
 
-```
+```javascript
 Promise.resolve()
   .then(function success (res) {
     throw new Error('error!!!')
@@ -362,7 +362,7 @@ Promise.resolve()
 
 ### 13. 代码输出结果
 
-```
+```javascript
 Promise.resolve('1')
   .then(res => {
     console.log(res)
@@ -400,7 +400,7 @@ finally2后面的then函数 2
 
 `.finally()`的错误捕获：
 
-```
+```javascript
 Promise.resolve('1')
   .finally(() => {
     console.log('finally1')
@@ -423,7 +423,7 @@ Promise.resolve('1')
 
 ### 14. 代码输出结果
 
-```
+```javascript
 function runAsync (x) {
     const p = new Promise(r => setTimeout(() => r(x, console.log(x)), 1000))
     return p
@@ -449,7 +449,7 @@ Promise.all([runAsync(1), runAsync(2), runAsync(3)]).then(res => console.log(res
 
 ### 15. 代码输出结果
 
-```
+```javascript
 function runAsync (x) {
   const p = new Promise(r => setTimeout(() => r(x, console.log(x)), 1000))
   return p
@@ -480,7 +480,7 @@ Error: 2
 
 ### 16. 代码输出结果
 
-```
+```javascript
 function runAsync (x) {
   const p = new Promise(r => setTimeout(() => r(x, console.log(x)), 1000))
   return p
@@ -503,7 +503,7 @@ then只会捕获第一个成功的方法，其他的函数虽然还会继续执�
 
 ### 17. 代码输出结果
 
-```
+```javascript
 function runAsync(x) {
   const p = new Promise(r =>
     setTimeout(() => r(x, console.log(x)), 1000)
@@ -539,7 +539,7 @@ Error: 0
 
 ### 18. 代码输出结果
 
-```
+```javascript
 async function async1() {
   console.log("async1 start");
   await async2();
@@ -573,7 +573,7 @@ async1 end
 
 ### 19. 代码输出结果
 
-```
+```javascript
 async function async1() {
   console.log("async1 start");
   await async2();
@@ -617,7 +617,7 @@ timer1
 
 ### 20. 代码输出结果
 
-```
+```javascript
 async function async1 () {
   console.log('async1 start');
   await new Promise(resolve => {
@@ -644,7 +644,7 @@ script end
 
 ### 21. 代码输出结果
 
-```
+```javascript
 async function async1 () {
   console.log('async1 start');
   await new Promise(resolve => {
@@ -677,7 +677,7 @@ async1 end
 
 ### 22. 代码输出结果
 
-```
+```javascript
 async function async1() {
   console.log("async1 start");
   await async2();
@@ -731,7 +731,7 @@ setTimeout
 
 ### 23. 代码输出结果
 
-```
+```javascript
 async function async1 () {
   await async2();
   console.log('async1');
@@ -780,7 +780,7 @@ async1 success
 
 ### 24. 代码输出结果
 
-```
+```javascript
 const first = () => (new Promise((resolve, reject) => {
     console.log(3);
     let p = new Promise((resolve, reject) => {
@@ -812,7 +812,7 @@ console.log(4);
 1
 2
 5
-Promise{<resolved>: 1}
+Promise{<fulfilled>: 1}
 ```
 
 代码的执行过程如下：
@@ -825,11 +825,11 @@ Promise{<resolved>: 1}
 6. 执行外面的代码，打印出4；
 7. 这样第一轮宏任务就执行完了，开始执行微任务队列中的任务，先后打印出1和2；
 8. 这样微任务就执行完了，开始执行下一轮宏任务，宏任务队列中有一个定时器，执行它，打印出5，由于执行已经变为resolved状态，所以`resolve(6)`不会再执行；
-9. 最后`console.log(p)`打印出`Promise{<resolved>: 1}`；
+9. 最后`console.log(p)`打印出`Promise{<fulfilled>: 1}`；
 
 ### 25. 代码输出结果
 
-```
+```javascript
 const async1 = async () => {
   console.log('async1');
   setTimeout(() => {
@@ -877,13 +877,13 @@ timer1
 
 ### 26. 代码输出结果
 
-```
+```javascript
 const p1 = new Promise((resolve) => {
   setTimeout(() => {
     resolve('resolve3');
     console.log('timer1')
   }, 0)
-  resolve('resovle1');
+  resolve('resolve1');
   resolve('resolve2');
 }).then(res => {
   console.log(res)  // resolve1
@@ -901,12 +901,12 @@ const p1 = new Promise((resolve) => {
 resolve1
 finally  undefined
 timer1
-Promise{<resolved>: undefined}
+Promise{<fulfilled>: undefined}
 ```
 
 ### 27. 代码输出结果
 
-```
+```javascript
 console.log('1');
 
 setTimeout(function() {
@@ -962,6 +962,8 @@ setTimeout(function() {
 12
 ```
 
+有nextTick证明是node环境
+
 **（1）第一轮事件循环流程分析如下：**
 
 - 整体script作为第一个宏任务进入主线程，遇到`console.log`，输出1。
@@ -984,7 +986,7 @@ setTimeout(function() {
 
 
 
-**（2）第二轮时间循环从**`**setTimeout1**`**宏任务开始：**
+**（2）第二轮时间循环从**`setTimeout1`**宏任务开始：**
 
 - 首先输出2。接下来遇到了`process.nextTick()`，同样将其分发到微任务Event Queue中，记为`process2`。
 - `new Promise`立即执行输出4，`then`也分发到微任务Event Queue中，记为`then2`。
@@ -1026,9 +1028,11 @@ setTimeout(function() {
 
 整段代码，共进行了三次事件循环，完整的输出为1，7，6，8，2，4，3，5，9，11，10，12。
 
+假设无nextTick，输出为1、7、8、2、4、5、9、11、12
+
 ### 28. 代码输出结果
 
-```
+```javascript
 console.log(1)
 
 setTimeout(() => {
@@ -1083,7 +1087,7 @@ console.log(8)
 
 ### 29. 代码输出结果
 
-```
+```javascript
 console.log(1);
     
 setTimeout(() => {
@@ -1133,7 +1137,7 @@ console.log(7);
 
 ### 30. 代码输出结果
 
-```
+```javascript
 Promise.resolve().then(() => {
     console.log('1');
     throw 'Error';
@@ -1160,11 +1164,11 @@ Promise.resolve().then(() => {
 6
 ```
 
-在这道题目中，我们需要知道，无论是thne还是catch中，只要throw 抛出了错误，就会被catch捕获，如果没有throw出错误，就被继续执行后面的then。
+在这道题目中，我们需要知道，无论是then还是catch中，只要throw 抛出了错误，就会被catch捕获，如果没有throw出错误，就被继续执行后面的then。
 
 ### 31. 代码输出结果
 
-```
+```javascript
 setTimeout(function () {
   console.log(1);
 }, 100);
@@ -1216,7 +1220,7 @@ console.log(8);
 
 ### 1. 代码输出结果
 
-```
+```javascript
 function foo() {
   console.log( this.a );
 }
@@ -1238,11 +1242,11 @@ obj.doFoo()
 
 
 
-在Javascript中，this指向函数执行时的当前对象。在执行foo的时候，执行环境就是doFoo函数，执行环境为全局。所以，foo中的this是指向window的，所以会打印出2。
+在Javascript中，**this指向函数执行时的当前对象**。在执行foo的时候，执行环境就是doFoo函数，执行环境为全局。所以，foo中的this是指向window的，所以会打印出2。
 
 ### 2. 代码输出结果
 
-```
+```javascript
 var a = 10
 var obj = {
   a: 20,
@@ -1260,13 +1264,13 @@ obj.say.apply(anotherObj)
 
 
 
-我么知道，箭头函数时不绑定this的，它的this来自原其父级所处的上下文，所以首先会打印全局中的 a 的值10。后面虽然让say方法指向了另外一个对象，但是仍不能改变箭头函数的特性，它的this仍然是指向全局的，所以依旧会输出10。
+我么知道，箭头函数时不绑定this的，它的this来自原其**父级所处的上下文**，所以首先会打印全局中的 a 的值10。后面虽然让say方法指向了另外一个对象，但是仍不能改变箭头函数的特性，它的this仍然是指向全局的，所以依旧会输出10。
 
 
 
 但是，如果是普通函数，那么就会有完全不一样的结果：
 
-```
+```javascript
 var a = 10  
 var obj = {  
   a: 20,  
@@ -1287,7 +1291,7 @@ obj.say.apply(anotherObj)
 
 ### 3. 代码输出结果
 
-```
+```javascript
 function a() {
   console.log(this);
 }
@@ -1302,9 +1306,9 @@ a.call(null);
 
 
 
-要注意的是，在严格模式中，null 就是 null，undefined 就是 undefined：
+要注意的是，在**严格模式中**，null 就是 null，undefined 就是 undefined：
 
-```
+```javascript
 'use strict';
 
 function a() {
@@ -1316,7 +1320,7 @@ a.call(undefined); // undefined
 
 ### 4. 代码输出结果
 
-```
+```javascript
 var obj = { 
   name: 'cuggz', 
   fun: function(){ 
@@ -1329,7 +1333,7 @@ new obj.fun() // undefined
 
 ### 6. 代码输出结果
 
-```
+```javascript
 var obj = {
    say: function() {
      var f1 = () =>  {
@@ -1365,7 +1369,7 @@ window对象
 
 ### 7. 代码输出结果
 
-```
+```javascript
 var myObject = {
     foo: "bar",
     func: function() {
@@ -1388,11 +1392,11 @@ myObject.func();
 **解析：**
 
 1. 首先func是由myObject调用的，this指向myObject。又因为var self = this;所以self指向myObject。
-2. 这个立即执行匿名函数表达式是由window调用的，this指向window 。立即执行匿名函数的作用域处于myObject.func的作用域中，在这个作用域找不到self变量，沿着作用域链向上查找self变量，找到了指向 myObject对象的self。
+2. 这个**立即执行匿名函数表达式是由window调用的**，this指向window 。立即执行匿名函数的作用域处于myObject.func的作用域中，在这个作用域找不到self变量，沿着作用域链向上查找self变量，找到了指向 myObject对象的self。
 
 ### 8. 代码输出问题
 
-```
+```javascript
 window.number = 2;
 var obj = {
  number: 3,
@@ -1419,7 +1423,7 @@ console.log(window.number);  // 40
 
 ### 9. 代码输出结果
 
-```
+```javascript
 var length = 10;
 function fn() {
     console.log(this.length);
@@ -1447,7 +1451,7 @@ obj.method(fn, 1);
 
 ### 10. 代码输出结果
 
-```
+```javascript
 var a = 1;
 function printA(){
   console.log(this.a);
@@ -1478,7 +1482,7 @@ foo(); // 1
 
 ### 11. 代码输出结果
 
-```
+```javascript
 var x = 3;
 var y = 4;
 var obj = {
@@ -1505,12 +1509,12 @@ console.log(obj.getY()) // 6
 
 **解析：**
 
-1. 我们知道，匿名函数的this是指向全局对象的，所以this指向window，会打印出3；
+1. 我们知道，**匿名函数的this是指向全局对象的**，所以this指向window，会打印出3；
 2. getY是由obj调用的，所以其this指向的是obj对象，会打印出6。
 
 ### 12. 代码输出结果
 
-```
+```javascript
  var a = 10; 
  var obt = { 
    a: 20, 
@@ -1536,7 +1540,7 @@ console.log(obj.getY()) // 6
 
 ### 13. 代码输出结果
 
-```
+```javascript
 function a(xx){
   this.x = xx;
   return this
@@ -1544,7 +1548,7 @@ function a(xx){
 var x = a(5);
 var y = a(6);
 
-console.log(x.x)  // undefined
+console.log(x.x)  // undefined,a(6)后，x=6，故x.x undefined,
 console.log(y.x)  // 6
 ```
 
@@ -1554,12 +1558,12 @@ console.log(y.x)  // 6
 
 **解析：**
 
-1. 最关键的就是var x = a(5)，函数a是在全局作用域调用，所以函数内部的this指向window对象。**所以 this.x = 5 就相当于：window.x = 5。**之后 return this，也就是说 var x = a(5) 中的x变量的值是window，这里的x将函数内部的x的值覆盖了。然后执行console.log(x.x)， 也就是console.log(window.x)，而window对象中没有x属性，所以会输出undefined。
+1. 最关键的就是var x = a(5)，函数a是在全局作用域调用，所以函数内部的this指向window对象。**所以 this.x = 5 就相当于：window.x = 5。**之后 return this，也就是说 var x = a(5) 中的x变量的值是window，**这里的x将函数内部的x的值覆盖了**。然后执行console.log(x.x)， 也就是console.log(window.x)，而window对象中没有x属性，所以会输出undefined。
 2. 当指向y.x时，会给全局变量中的x赋值为6，所以会打印出6。
 
 ### 14. 代码输出结果
 
-```
+```javascript
 function foo(something){
     this.a = something
 }
@@ -1590,11 +1594,11 @@ console.log(bar.a); // 4
 1. 首先执行obj1.foo(2); 会在obj中添加a属性，其值为2。之后执行obj1.a，a是右obj1调用的，所以this指向obj，打印出2；
 2. 执行 obj1.foo.call(obj2, 3) 时，会将foo的this指向obj2，后面就和上面一样了，所以会打印出3；
 3. obj1.a会打印出2；
-4. 最后就是考察this绑定的优先级了，new 绑定是比隐式绑定优先级高，所以会输出4。
+4. 最后就是考察this绑定的优先级了，**new 绑定是比隐式绑定优先级高**，所以会输出4。
 
 ### 15. 代码输出结果
 
-```
+```javascript
 function foo(something){
     this.a = something
 }
@@ -1614,13 +1618,13 @@ console.log(baz.a); // 3
 
 
 
-这道题目和上面题目差不多，主要都是考察this绑定的优先级。记住以下结论即可：**this绑定的优先级：****new绑定 > 显式绑定 > 隐式绑定 > 默认绑定。**
+这道题目和上面题目差不多，主要都是考察this绑定的优先级。记住以下结论即可：**this绑定的优先级：new绑定 > 显式绑定 > 隐式绑定 > 默认绑定。**
 
 ## 三、作用域&变量提升&闭包
 
 ### 1. 代码输出结果
 
-```
+```javascript
 (function(){
    var x = y = 1;
 })();
@@ -1631,11 +1635,11 @@ console.log(z); // undefined
 console.log(x); // Uncaught ReferenceError: x is not defined
 ```
 
-这段代码的关键在于：var x = y = 1; 实际上这里是从右往左执行的，首先执行y = 1, 因为y没有使用var声明，所以它是一个全局变量，然后第二步是将y赋值给x，讲一个全局变量赋值给了一个局部变量，最终，x是一个局部变量，y是一个全局变量，所以打印x是报错。
+这段代码的关键在于：var x = y = 1; 实际上这里是**从右往左执行的**，首先执行y = 1, 因为y没有使用var声明，所以它是一个全局变量，然后第二步是将y赋值给x，讲一个全局变量赋值给了一个局部变量，最终，x是一个局部变量，y是一个全局变量，所以打印x是报错。
 
 ### 2. 代码输出结果
 
-```
+```javascript
 var a, b
 (function () {
    console.log(a);
@@ -1659,20 +1663,12 @@ undefined
 3
 ```
 
-```
-undefined 
-undefined 
-3 
-3 
-undefined 
-3
-```
 
 这个题目和上面题目考察的知识点类似，b赋值为3，b此时是一个全局变量，而将3赋值给a，a是一个局部变量，所以最后打印的时候，a仍旧是undefined。
 
 ### 3. 代码输出结果
 
-```
+```javascript
 var friendName = 'World';
 (function() {
   if (typeof friendName === 'undefined') {
@@ -1690,7 +1686,7 @@ var friendName = 'World';
 
 我们知道，在 JavaScript中， Function 和 var 都会被提升（变量提升），所以上面的代码就相当于：
 
-```
+```javascript
 var name = 'World!';
 (function () {
     var name;
@@ -1707,7 +1703,7 @@ var name = 'World!';
 
 ### 4. 代码输出结果
 
-```
+```javascript
 function fn1(){
   console.log('fn1')
 }
@@ -1735,7 +1731,7 @@ fn2
 
 ### 5. 代码输出结果
 
-```
+```javascript
 function a() {
     var temp = 10;
     function b() {
@@ -1759,7 +1755,7 @@ a();
 
 ### 6. 代码输出结果
 
-```
+```javascript
  var a=3;
  function c(){
     alert(a);
@@ -1774,7 +1770,7 @@ js中变量的作用域链与定义时的环境有关，与执行时无关。执
 
 ### 7.  代码输出问题
 
-```
+```javascript
 function fun(n, o) {
   console.log(o)
   return {
@@ -1800,7 +1796,7 @@ undefined  0  1  1
 
 ### 8. 代码输出结果
 
-```
+```javascript
 f = function() {return true;};   
 g = function() {return false;};   
 (function() {   
@@ -1830,7 +1826,7 @@ console.log(f());
 
 ### 1. 代码输出结果
 
-```
+```javascript
 function Person(name) {
     this.name = name
 }
@@ -1845,19 +1841,35 @@ console.log(p2.prototype)//undefined p2是实例，没有prototype属性
 console.log(Person.constructor)//Function 一个空函数
 console.log(Person.prototype)//打印出Person.prototype这个对象里所有的方法和属性
 console.log(Person.prototype.constructor)//Person
+
 console.log(Person.prototype.__proto__)// Object.prototype
 console.log(Person.__proto__) //Function.prototype
+
 console.log(Function.prototype.__proto__)//Object.prototype
 console.log(Function.__proto__)//Function.prototype
+
 console.log(Object.__proto__)//Function.prototype
 console.log(Object.prototype.__proto__)//null
 ```
 
 这道义题目考察原型、原型链的基础，记住就可以了。
 
+``_proto__``隐式原型、``prototy``显示原型
+
+举一反三instanceof源码，实现
+
+[Function.prototype和Object.prototype](https://blog.csdn.net/lll_y1025/article/details/104911728)
+
+```javascript
+Function.__proto === Function.prototype === Object._proto__
+Function.prototype.__proto === Object.prototype
+```
+
+
+
 ### 2. 代码输出结果
 
-```
+```javascript
 // a
 function Foo () {
  getName = function () {
@@ -1902,12 +1914,12 @@ new new Foo().getName(); // 3
 3.  **Foo().getName()，**这里要看a处，在Foo内部将全局的getName重新赋值为 console.log(1) 的函数，执行Foo()返回 this，这个this指向window，Foo().getName() 即为window.getName()，输出 1；
 4. **getName()，**上面3中，全局的getName已经被重新赋值，所以这里依然输出 1；
 5. **new Foo.getName()，**这里等价于 new (Foo.getName())，先执行 Foo.getName()，输出 2，然后new一个实例；
-6. **new Foo().getName()，**这里等价于 (new Foo()).getName(), 先new一个Foo的实例，再执行这个实例的getName方法，但是这个实例本身没有这个方法，所以去原型链__protot__上边找，实例.__protot__ === Foo.prototype，所以输出 3；
+6. **new Foo().getName()，**这里等价于 (new Foo()).getName(), 先new一个Foo的实例，再执行这个实例的getName方法，但是这个实例本身没有这个方法，所以去原型链```__proto__```上边找，```实例.__protot__ === Foo.prototype```，所以输出 3；
 7. **new new Foo().getName()，**这里等价于new (new Foo().getName())，如上述6，先输出 3，然后new 一个 new Foo().getName() 的实例。
 
 ### 3. 代码输出结果
 
-```
+```javascript
 var F = function() {};
 Object.prototype.a = function() {
   console.log('a');
@@ -1938,7 +1950,7 @@ b
 
 ### 4. 代码输出结果
 
-```
+```javascript
 function Foo(){
     Foo.a = function(){
         console.log(1);
@@ -1968,14 +1980,14 @@ Foo.a();
 
 **解析：**
 
-1. Foo.a() 这个是调用 Foo 函数的静态方法 a，虽然 Foo 中有优先级更高的属性方法 a，但 Foo 此时没有被调用，所以此时输出 Foo 的静态方法 a 的结果：4
+1. Foo.a() 这个是调用 Foo 函数的**静态方法 a**，虽然 Foo 中有优先级更高的属性方法 a，但 Foo 此时没有被调用，所以此时输出 Foo 的静态方法 a 的结果：4
 2. let obj = new Foo(); 使用了 new 方法调用了函数，返回了函数实例对象，此时 Foo 函数内部的属性方法初始化，原型链建立。
-3.  obj.a() ; 调用 obj 实例上的方法 a，该实例上目前有两个 a 方法：一个是内部属性方法，另一个是原型上的方法。当这两者都存在时，首先查找 ownProperty ，如果没有才去原型链上找，所以调用实例上的 a 输出：2
+3.  obj.a() ; 调用 obj 实例上的方法 a，该实例上目前有两个 a 方法：一个是内部属性方法，另一个是原型上的方法。当这两者都存在时，首先查找 **ownProperty** ，如果没有才去原型链上找，所以调用实例上的 a 输出：2
 4. Foo.a() ; 根据第2步可知 Foo 函数内部的属性方法已初始化，覆盖了同名的静态方法，所以输出：1
 
 ### 5. 代码输出结果
 
-```
+```javascript
 function Dog() {
   this.name = 'puppy'
 }
@@ -1998,9 +2010,9 @@ console.log(Dog.prototype.constructor === Dog && dog.constructor === Dog && dog 
 
 constructor是prototype上的属性，这一点很容易被忽略掉。constructor和instanceof 的作用是不同的，感性地来说，constructor的限制比较严格，它只能严格对比对象的构造函数是不是指定的值；而instanceof比较松散，只要检测的类型在原型链上，就会返回true。
 
-### 6. 代码输出结果
+### 6. *代码输出结果
 
-```
+```javascript
 var A = {n: 4399};
 var B =  function(){this.n = 9999};
 var C =  function(){var n = 8888};
@@ -2024,7 +2036,7 @@ console.log(c.n);
 
 ### 7. 代码输出问题
 
-```
+```javascript
 function A(){
 }
 function B(a){
@@ -2032,7 +2044,7 @@ function B(a){
 }
 function C(a){
 　　if(a){
-this.a = a;
+      this.a = a;
 　　}
 }
 A.prototype.a = 1;
@@ -2054,9 +2066,9 @@ console.log(new C(2).a);
 2. console.log(new B().a)，ew B()为构造函数创建的对象，该构造函数有参数a，但该对象没有传参，故该输出值为undefined;
 3. console.log(new C(2).a)，new C()为构造函数创建的对象，该构造函数有参数a，且传的实参为2，执行函数内部，发现if为真，执行this.a = 2,故属性a的值为2。
 
-### 8 代码输出问题
+### 8 .*代码输出问题
 
-```
+```javascript
 function Parent() {
     this.a = 1;
     this.b = [1, 2, this.a];
@@ -2110,7 +2122,7 @@ child2.show(); // 6 [1,2,1,11,12] 5
 
 
 
-**解析****：**
+**解析：**
 
 1. parent.show()，可以直接获得所需的值，没啥好说的；
 2. child1.show()，`Child`的构造函数原本是指向`Child`的，题目显式将`Child`类的原型对象指向了`Parent`类的一个实例，需要注意`Child.prototype`指向的是`Parent`的实例`parent`，而不是指向`Parent`这个类。
@@ -2130,7 +2142,7 @@ child2.show(); // 6 [1,2,1,11,12] 5
 
 ### 9. 代码输出结果
 
-```
+```javascript
 function SuperType(){
     this.property = true;
 }

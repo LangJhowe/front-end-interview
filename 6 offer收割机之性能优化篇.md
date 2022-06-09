@@ -1,6 +1,8 @@
 
 ![性能优化面试题.png](https://cdn.nlark.com/yuque/0/2021/png/1500604/1621611602044-9eff4f96-7acb-4c4a-927e-fa254bf23418.png?x-oss-process=image%2Fresize%2Cw_1038)
 
+[TOC]
+
 ## 一、CDN---了解即可
 
 ### 1. CDN的概念
@@ -66,13 +68,13 @@ CDN和DNS有着密不可分的联系，先来看一下DNS的解析域名过程�
 
 （2）用户使用CDN缓存资源的过程：
 
-1. 对于点击的数据的URL，经过本地DNS系统的解析，发现该URL对应的是一个CDN专用的DNS服务器，DNS系统就会将域名解析权交给CNAME指向的CDN专用的DNS服务器。
-2. CDN专用DNS服务器将CDN的全局负载均衡设备IP地址返回给用户
-3. 用户向CDN的全局负载均衡设备发起数据请求
-4. CDN的全局负载均衡设备根据用户的IP地址，以及用户请求的内容URL，选择一台用户所属区域的区域负载均衡设备，告诉用户向这台设备发起请求
-5. 区域负载均衡设备选择一台合适的缓存服务器来提供服务，将该缓存服务器的IP地址返回给全局负载均衡设备
-6. 全局负载均衡设备把服务器的IP地址返回给用户
-7. 用户向该缓存服务器发起请求，缓存服务器响应用户的请求，将用户所需内容发送至用户终端。
+1. 对于点击的数据的URL，经过**本地DNS系统的解析**，发现该URL对应的是一个**CDN专用的DNS服务器**，DNS系统就会将**域名解析权**交给**CNAME指向的CDN专用的DNS服务器**。
+2. **CDN专用DNS服务器**将**CDN的全局负载均衡设备IP地址**返回给用户
+3. 用户向**CDN的全局负载均衡设备**发起数据**请求**
+4. **CDN的全局负载均衡设备**根据用户的**IP地址，以及用户请求的内容URL**，选择一台**用户所属区域的区域负载均衡设备**，告诉**用户**向这台设备发起**请求**
+5. **区域负载均衡设备**选择一台合适的**缓存服务器来提供服务**，将该缓**存服务器的IP地址**返回给**全局负载均衡设备**
+6. **全局负载均衡设备把服务器的IP地址**返回给用户
+7. 用户向该**缓存服务器**发起请求，缓存服务器响应用户的请求，将用户所需内容发送至用户终端。
 
 
 
@@ -171,7 +173,7 @@ function lozyLoad(){
 
 ## 三、回流与重绘
 
-### 1. 回流与重绘的概念及触发条件
+### 1. 回流(重排)与重绘的概念及触发条件
 
 #### （1）回流
 
@@ -266,7 +268,7 @@ MDN中对`documentFragment`的解释：
 
 
 
-**节流函数的****适⽤场景：** 
+**节流函数的适⽤场景：** 
 
 - 拖拽场景：固定时间内只执⾏⼀次，防⽌超⾼频次触发位置变动 
 - 缩放场景：监控浏览器resize 
@@ -276,7 +278,7 @@ MDN中对`documentFragment`的解释：
 
 **函数防抖的实现：**
 
-```
+```javascript
 function debounce(fn, wait) {
   var timer = null;
 
@@ -300,7 +302,7 @@ function debounce(fn, wait) {
 
 **函数节流的实现：**
 
-```
+```javascript
 // 时间戳版
 function throttle(fn, delay) {
   var preTime = Date.now();
@@ -392,7 +394,7 @@ function throttle (fun, wait){
 
 首先我们**优化 Loader 的文件搜索范围**
 
-```
+```javascript
 module.exports = {
   module: {
     rules: [
@@ -428,7 +430,7 @@ loader: 'babel-loader?cacheDirectory=true'
 
 **HappyPack 可以将 Loader 的同步执行转换为并行的**，这样就能充分利用系统资源来加快打包效率了
 
-```
+```javascript
 module: {
   loaders: [
     {
@@ -454,7 +456,7 @@ plugins: [
 
 **DllPlugin 可以将特定的类库提前打包然后引入**。这种方式可以极大的减少打包类库的次数，只有当类库更新版本才有需要重新打包，并且也实现了将公共代码抽离成单独文件的优化方案。DllPlugin的使用方法如下：
 
-```
+```javascript
 // 单独配置在一个文件中
 // webpack.dll.conf.js
 const path = require('path')
@@ -483,7 +485,7 @@ module.exports = {
 
 然后需要执行这个配置文件生成依赖文件，接下来需要使用 `DllReferencePlugin` 将依赖文件引入项目中
 
-```
+```javascript
 // webpack.conf.js
 module.exports = {
   // ...省略其他配置
@@ -531,7 +533,7 @@ module.exports = {
 
 比如希望打包两个文件：
 
-```
+```javascript
 // test.js
 export const a = 1
 // index.js
@@ -540,7 +542,7 @@ import { a } from './test.js'
 
 对于这种情况，打包出来的代码会类似这样：
 
-```
+```javascript
 [
   /* 0 */
   function (module, exports, require) {
@@ -555,7 +557,7 @@ import { a } from './test.js'
 
 但是如果使用 Scope Hoisting ，代码就会尽可能的合并到一个函数中去，也就变成了这样的类似代码：
 
-```
+```javascript
 [
   /* 0 */
   function (module, exports, require) {
@@ -566,7 +568,7 @@ import { a } from './test.js'
 
 这样的打包方式生成的代码明显比之前的少多了。如果在 Webpack4 中你希望开启这个功能，只需要启用 `optimization.concatenateModules` 就可以了：
 
-```
+```javascript
 module.exports = {
   optimization: {
     concatenateModules: true
@@ -578,7 +580,7 @@ module.exports = {
 
 **Tree Shaking 可以实现删除项目中未被引用的代码**，比如：
 
-```
+```javascript
 // test.js
 export const a = 1
 export const b = 2
@@ -597,7 +599,7 @@ import { a } from './test.js'
 ⽤webpack优化前端性能是指优化webpack的输出结果，让打包的最终结果在浏览器运⾏快速⾼效。 
 
 - **压缩代码**：删除多余的代码、注释、简化代码的写法等等⽅式。可以利⽤webpack的 UglifyJsPlugin 和 ParallelUglifyPlugin 来压缩JS⽂件， 利⽤ cssnano （css-loader?minimize）来压缩css 
-- **利⽤****CDN****加速**: 在构建过程中，将引⽤的静态资源路径修改为CDN上对应的路径。可以利⽤webpack对于 output 参数和各loader的 publicPath 参数来修改资源路径 
+- **利⽤CDN加速**: 在构建过程中，将引⽤的静态资源路径修改为CDN上对应的路径。可以利⽤webpack对于 output 参数和各loader的 publicPath 参数来修改资源路径 
 - **Tree Shaking**: 将代码中永远不会⾛到的⽚段删除掉。可以通过在启动webpack时追加参数 --optimize-minimize 来实现
 - **Code Splitting:** 将代码按路由维度或者组件分块(chunk),这样做到按需加载,同时可以充分利⽤浏览器缓存 
 - **提取公共第三⽅库**: SplitChunksPlugin插件来进⾏公共模块抽取,利⽤浏览器缓存可以⻓期缓存这些⽆需频繁变动的公共代码 

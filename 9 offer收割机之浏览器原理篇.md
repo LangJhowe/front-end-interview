@@ -1,9 +1,11 @@
 
 ![浏览器原理面试题.png](https://cdn.nlark.com/yuque/0/2021/png/1500604/1621608379974-5f496e1b-b721-4317-bd17-c3bb0411a510.png?x-oss-process=image%2Fresize%2Cw_1038)
 
+[TOC]
+
 ## 一、浏览器安全
 
-### 1.  什么是 XSS 攻击？
+### 1.  什么是 XSS(cross site script) 攻击？
 
 #### （1）概念
 
@@ -54,7 +56,7 @@ XSS 可以分为存储型、反射型和 DOM 型：
 
 
 
-反射型 XSS 跟存储型 XSS 的区别是：存储型 XSS 的恶意代码存在数据库⾥，反射型 XSS 的恶意代码存在 URL ⾥。 
+反射型 XSS 跟存储型 XSS 的区别是：存储型 XSS 的恶意代码存在**数据库**⾥，反射型 XSS 的恶意代码存在**URL** ⾥。 
 
 
 
@@ -85,7 +87,7 @@ DOM 型 XSS 跟前两种 XSS 的区别：DOM 型 XSS 攻击中，取出和执⾏
 
 - 对一些敏感信息进行保护，比如 cookie 使用 http-only，使得脚本无法获取。也可以使用验证码，避免脚本伪装成用户执行一些操作。
 
-### 3. 什么是 CSRF 攻击？
+### 3. 什么是 CSRF（Cross-site request forgery） 攻击？
 
 #### （1）概念
 
@@ -93,7 +95,7 @@ CSRF 攻击指的是**跨站请求伪造攻击**，攻击者诱导用户进入�
 
 
 
-CSRF 攻击的**本质是****利用 cookie 会在同源请求中携带发送给服务器的特点，以此来实现用户的冒充。**
+CSRF 攻击的**本质是利用 cookie 会在同源请求中携带发送给服务器的特点，以此来实现用户的冒充。**
 
 #### （2）攻击类型
 
@@ -109,7 +111,7 @@ CSRF 攻击的**本质是****利用 cookie 会在同源请求中携带发送给�
 
 - **进行同源检测**，服务器根据 http 请求头中 origin 或者 referer 信息来判断请求是否为允许访问的站点，从而对请求进行过滤。当 origin 或者 referer 信息都不存在的时候，直接阻止请求。这种方式的缺点是有些情况下 referer 可以被伪造，同时还会把搜索引擎的链接也给屏蔽了。所以一般网站会允许搜索引擎的页面请求，但是相应的页面请求这种请求方式也可能被攻击者给利用。（Referer 字段会告诉服务器该网页是从哪个页面链接过来的）
 - **使用 CSRF Token 进行验证**，服务器向用户返回一个随机数 Token ，当网站再次发起请求时，在请求参数中加入服务器端返回的 token ，然后服务器对这个 token 进行验证。这种方法解决了使用 cookie 单一验证方式时，可能会被冒用的问题，但是这种方法存在一个缺点就是，我们需要给网站中的所有请求都添加上这个 token，操作比较繁琐。还有一个问题是一般不会只有一台网站服务器，如果请求经过负载平衡转移到了其他的服务器，但是这个服务器的 session 中没有保留这个 token 的话，就没有办法验证了。这种情况可以通过改变 token 的构建方式来解决。
-- **对** **Cookie 进行****双重验证**，服务器在用户访问网站页面时，向请求域名注入一个Cookie，内容为随机字符串，然后当用户再次向服务器发送请求的时候，从 cookie 中取出这个字符串，添加到 URL 参数中，然后服务器通过对 cookie 中的数据和参数中的数据进行比较，来进行验证。使用这种方式是利用了攻击者只能利用 cookie，但是不能访问获取 cookie 的特点。并且这种方法比 CSRF Token 的方法更加方便，并且不涉及到分布式访问的问题。这种方法的缺点是如果网站存在 XSS 漏洞的，那么这种方式会失效。同时这种方式不能做到子域名的隔离。
+- **对** **Cookie 进行双重验证**，服务器在用户访问网站页面时，向请求域名注入一个Cookie，内容为随机字符串，然后当用户再次向服务器发送请求的时候，从 cookie 中取出这个字符串，添加到 URL 参数中，然后服务器通过对 cookie 中的数据和参数中的数据进行比较，来进行验证。使用这种方式是利用了攻击者只能利用 cookie，但是不能访问获取 cookie 的特点。并且这种方法比 CSRF Token 的方法更加方便，并且不涉及到分布式访问的问题。这种方法的缺点是如果网站存在 XSS 漏洞的，那么这种方式会失效。同时这种方式不能做到子域名的隔离。
 - **在设置 cookie 属性的时候设置 Samesite ，限制 cookie 不能作为被第三方使用**，从而可以避免被攻击者利用。Samesite 一共有两种模式，一种是严格模式，在严格模式下 cookie 在任何情况下都不可能作为第三方 Cookie 使用，在宽松模式下，cookie 可以被请求是 GET 请求，且会发生页面跳转的请求所使用。
 
 ### 5. 什么是中间人攻击？如何防范中间人攻击？
@@ -138,12 +140,12 @@ CSRF 攻击的**本质是****利用 cookie 会在同源请求中携带发送给�
 
 ⽹络劫持分为两种: 
 
-（1）**DNS****劫持**: (输⼊京东被强制跳转到淘宝这就属于dns劫持) 
+（1）**DNS劫持**: (输⼊京东被强制跳转到淘宝这就属于dns劫持) 
 
 - DNS强制解析: 通过修改运营商的本地DNS记录，来引导⽤户流量到缓存服务器
 - 302跳转的⽅式: 通过监控⽹络出⼝的流量，分析判断哪些内容是可以进⾏劫持处理的,再对劫持的内存发起302跳转的回复，引导⽤户获取内容 
 
-（2）**HTTP****劫持**: (访问⾕歌但是⼀直有贪玩蓝⽉的⼴告),由于http明⽂传输,运营商会修改你的http响应内容(即加⼴告) 
+（2）**HTTP劫持**: (访问⾕歌但是⼀直有贪玩蓝⽉的⼴告),由于http明⽂传输,运营商会修改你的http响应内容(即加⼴告) 
 
 
 
@@ -381,7 +383,7 @@ Service Worker 是运行在浏览器背后的**独立线程**，一般可以用�
 
 Service Worker 实现缓存功能一般分为三个步骤：首先需要先注册 Service Worker，然后监听到 `install` 事件以后就可以缓存需要的文件，那么在下次用户访问的时候就可以通过拦截请求的方式查询是否存在缓存，存在缓存的话就可以直接读取缓存文件，否则就去请求数据。以下是这个步骤的实现：
 
-```
+```javascript
 // index.js
 if (navigator.serviceWorker) {
   navigator.serviceWorker
@@ -450,7 +452,7 @@ self.addEventListener('fetch', e => {
 
 
 
-**Disk Cache：**Push Cache 是 HTTP/2 中的内容，当以上三种缓存都没有命中时，它才会被使用。**并且缓存时间也很短暂，只在会话（Session）中存在，一旦会话结束就被释放。**其具有以下特点：
+**Push Cache：**Push Cache 是 HTTP/2 中的内容，当以上三种缓存都没有命中时，它才会被使用。**并且缓存时间也很短暂，只在会话（Session）中存在，一旦会话结束就被释放。**其具有以下特点：
 
 - 所有的资源都能被推送，但是 Edge 和 Safari 浏览器兼容性不怎么好
 - 可以推送 `no-cache` 和 `no-store` 的资源
@@ -612,7 +614,9 @@ HTML 和 CSS 规范中规定了浏览器解释 html 文档的方式，由 W3C �
 
  （10）UC 浏览器内核：这个众口不一，UC 说是他们自己研发的 U3 内核，但好像还是基于 Webkit 和 Trident ，还有说是基于火狐内核。
 
-### 5. 浏览器的主要组成部分
+### 5. 浏览器的主要组成部分（7）
+
+（用、浏、呈、网络、用户界面后端、javascript解释器、数据存储）
 
 - **⽤户界⾯** - 包括地址栏、前进/后退按钮、书签菜单等。除了浏览器主窗⼝显示的您请求的⻚⾯外，其他显示的各个部分都属于⽤户界⾯。 
 - **浏览器引擎** - 在⽤户界⾯和呈现引擎之间传送指令。 
@@ -684,15 +688,15 @@ HTML 和 CSS 规范中规定了浏览器解释 html 文档的方式，由 W3C �
 
 - HTML文件的代码层级尽量不要太深
 - 使用语义化的标签，来避免不标准语义化的特殊处理
-- 减少CSSD代码的层级，因为选择器是从左向右进行解析的
+- 减少CSS代码的层级，因为选择器是从左向右进行解析的
 
 
 
-**（4）减少回流与重绘：**
+**（4）减少回流与重绘：**（8）
 
 - 操作DOM时，尽量在低层级的DOM节点进行操作
 - 不要使用`table`布局， 一个小的改动可能会使整个`table`进行重新布局
-- 使用CSS的表达式
+- 避免使用CSS的表达式
 - 不要频繁操作元素的样式，对于静态页面，可以修改类名，而不是样式。
 - 使用absolute或者fixed，使元素脱离文档流，这样他们发生变化就不会影响其他元素
 - 避免频繁操作DOM，可以创建一个文档片段`documentFragment`，在它上面应用所有DOM操作，最后再把它添加到文档中
@@ -721,7 +725,7 @@ Webkit 和 Firefox 都做了这个优化，当执行 JavaScript 脚本时，另�
 
 ### 5. CSS 如何阻塞文档解析？
 
-理论上，既然样式表不改变 DOM 树，也就没有必要停下文档的解析等待它们。然而，存在一个问题，JavaScript 脚本执行时可能在文档的解析过程中请求样式信息，如果样式还没有加载和解析，脚本将得到错误的值，显然这将会导致很多问题。所以如果浏览器尚未完成 CSSOM 的下载和构建，而我们却想在此时运行脚本，那么浏览器将延迟 JavaScript 脚本执行和文档的解析，直至其完成 CSSOM 的下载和构建。也就是说，在这种情况下，浏览器会先下载和构建 CSSOM，然后再执行 JavaScript，最后再继续文档的解析。
+理论上，既然样式表不改变 DOM 树，也就没有必要停下文档的解析等待它们。然而，存在一个问题，**JavaScript 脚本执行时可能在文档的解析过程中请求样式信息**，如果样式还没有加载和解析，脚本将得到错误的值，显然这将会导致很多问题。所以如果浏览器尚未完成 CSSOM 的下载和构建，而我们却想在此时运行脚本，那么浏览器将延迟 JavaScript 脚本执行和文档的解析，直至其完成 CSSOM 的下载和构建。也就是说，在这种情况下，浏览器会先下载和构建 CSSOM，然后再执行 JavaScript，最后再继续文档的解析。
 
 ### 6. 如何优化关键渲染路径？
 
@@ -811,7 +815,7 @@ LocalStorage是HTML5新引入的特性，由于有的时候我们存储的信息
 
 
 
-**LocalStorage的****常用API：**
+**LocalStorage的常用API：**
 
 ```
 // 保存数据到 localStorage
@@ -830,7 +834,7 @@ localStorage.clear();
 localStorage.key(index)
 ```
 
-**LocalStorage的****使用场景：**
+**LocalStorage的使用场景：**
 
 - 有些网站有换肤的功能，这时候就可以将换肤的信息存储在本地的LocalStorage中，当需要换肤的时候，直接操作LocalStorage即可
 - 在网站中的用户浏览信息也会存储在LocalStorage中，还有网站的一些不常变动的个人信息等也可以存储在本地的LocalStorage中
@@ -841,7 +845,7 @@ SessionStorage和LocalStorage都是在HTML5才提出来的存储方案，Session
 
 
 
-**SessionStorage****与LocalStorage对比：**
+**SessionStorage与LocalStorage对比：**
 
 - SessionStorage和LocalStorage都在**本地进行数据存储**；
 - SessionStorage也有同源策略的限制，但是SessionStorage有一条更加严格的限制，SessionStorage**只有在同一浏览器的同一窗口下才能够共享**；
@@ -849,7 +853,7 @@ SessionStorage和LocalStorage都是在HTML5才提出来的存储方案，Session
 
 
 
-**SessionStorage的****常用API：**
+**SessionStorage的常用API：**
 
 ```
 // 保存数据到 sessionStorage
@@ -868,7 +872,7 @@ sessionStorage.clear();
 sessionStorage.key(index)
 ```
 
-**SessionStorage的****使用场景**
+**SessionStorage的使用场景**
 
 - 由于SessionStorage具有时效性，所以可以用来存储一些网站的游客登录的信息，还有临时的浏览记录的信息。当关闭网站之后，这些信息也就随之消除了。
 
@@ -980,7 +984,7 @@ CORS需要浏览器和服务器同时支持，整个CORS过程都是浏览器完
 - GET
 - POST
 
-**2）HTTP的头信息不超出以下几种字段：**
+**2）HTTP的头信息不超出以下几种字段：**（5）
 
 - Accept
 - Accept-Language
@@ -1064,13 +1068,13 @@ OPTIONS请求次数过多就会损耗页面加载的性能，降低用户体验�
 
 在CORS请求中，如果想要传递Cookie，就要满足以下三个条件：
 
-- **在请求中设置** `**withCredentials**`
+- **在请求中设置** `withCredentials`
 
 
 
 默认情况下在跨域请求，浏览器是不带 cookie 的。但是我们可以通过设置 withCredentials 来进行传递 cookie.
 
-```
+```javascript
 // 原生 xml 的设置方式
 var xhr = new XMLHttpRequest();
 xhr.withCredentials = true;
@@ -1087,7 +1091,7 @@ axios.defaults.withCredentials = true;
 
 1）原生JS实现：
 
-```
+```javascript
 <script>
     var script = document.createElement('script');
     script.type = 'text/javascript';
@@ -1103,13 +1107,13 @@ axios.defaults.withCredentials = true;
 
 服务端返回如下（返回时即执行全局函数）：
 
-```
+```javascript
 handleCallback({"success": true, "user": "admin"})
 ```
 
 2）Vue axios实现：
 
-```
+```javascript
 this.$http = axios;
 this.$http.jsonp('http://www.domain2.com:8080/login', {
     params: {},
@@ -1121,7 +1125,7 @@ this.$http.jsonp('http://www.domain2.com:8080/login', {
 
 后端node.js代码：
 
-```
+```javascript
 var querystring = require('querystring');
 var http = require('http');
 var server = http.createServer();
@@ -1162,7 +1166,7 @@ postMessage是HTML5 XMLHttpRequest Level 2中的API，且是为数不多可以�
 
 1）a.html：(domain1.com/a.html)
 
-```
+```html
 <iframe id="iframe" src="http://www.domain2.com/b.html" style="display:none;"></iframe>
 <script>       
     var iframe = document.getElementById('iframe');
@@ -1182,7 +1186,7 @@ postMessage是HTML5 XMLHttpRequest Level 2中的API，且是为数不多可以�
 
 2）b.html：(domain2.com/b.html)
 
-```
+```html
 <script>
     // 接收domain1的数据
     window.addEventListener('message', function(e) {
@@ -1207,7 +1211,7 @@ nginx代理跨域，实质和CORS跨域原理一样，通过配置文件设置�
 
 浏览器跨域访问js、css、img等常规静态资源被同源策略许可，但iconfont字体文件(eot|otf|ttf|woff|svg)例外，此时可在nginx的静态资源服务器中加入以下配置。
 
-```
+```nginx
 location / {
   add_header Access-Control-Allow-Origin *;
 }
@@ -1223,7 +1227,7 @@ location / {
 
 nginx具体配置：
 
-```
+```nginx
 #proxy服务器
 server {
     listen       81;
@@ -1251,7 +1255,7 @@ node中间件实现跨域代理，原理大致与nginx相同，都是通过启�
 
 - 前端代码：
 
-```
+```javascript
 var xhr = new XMLHttpRequest();
 // 前端开关：浏览器是否读写cookie
 xhr.withCredentials = true;
@@ -1262,7 +1266,7 @@ xhr.send();
 
 - 中间件服务器代码：
 
-```
+```javascript
 var express = require('express');
 var proxy = require('http-proxy-middleware');
 var app = express();
@@ -1290,7 +1294,7 @@ node + vue + webpack + webpack-dev-server搭建的项目，跨域请求接口，
 
 webpack.config.js部分配置：
 
-```
+```javascript
 module.exports = {
     entry: {},
     module: {},
@@ -1315,7 +1319,7 @@ module.exports = {
 
 1）父窗口：(domain.com/a.html)
 
-```
+```html
 <iframe id="iframe" src="http://child.domain.com/b.html"></iframe>
 <script>
     document.domain = 'domain.com';
@@ -1325,7 +1329,7 @@ module.exports = {
 
 1）子窗口：(child.domain.com/a.html)
 
-```
+```html
 <script>
     document.domain = 'domain.com';
     // 获取父窗口中变量
@@ -1345,7 +1349,7 @@ module.exports = {
 
 1）a.html：(domain1.com/a.html)
 
-```
+```html
 <iframe id="iframe" src="http://www.domain2.com/b.html" style="display:none;"></iframe>
 <script>
     var iframe = document.getElementById('iframe');
@@ -1363,7 +1367,7 @@ module.exports = {
 
 2）b.html：(.domain2.com/b.html)
 
-```
+```html
 <iframe id="iframe" src="http://www.domain1.com/c.html" style="display:none;"></iframe>
 <script>
     var iframe = document.getElementById('iframe');
@@ -1376,7 +1380,7 @@ module.exports = {
 
 3）c.html：([http://www.domain1.com/c.html](https://link.zhihu.com/?target=http%3A//www.domain1.com/c.html))
 
-```
+```html
 <script>
     // 监听b.html传来的hash值
     window.onhashchange = function () {
@@ -1394,7 +1398,7 @@ window.name属性的独特之处：name值在不同的页面（甚至不同域�
 
 1）a.html：(domain1.com/a.html)
 
-```
+```javascript
 var proxy = function(url, callback) {
     var state = 0;
     var iframe = document.createElement('iframe');
@@ -1434,7 +1438,7 @@ proxy('http://www.domain2.com/b.html', function(data){
 
 3）b.html：(domain2.com/b.html)
 
-```
+```html
 <script>
     window.name = 'This is domain2 data!';
 </script>
@@ -1454,7 +1458,7 @@ WebSocket protocol是HTML5一种新的协议。它实现了浏览器与服务器
 
 1）前端代码：
 
-```
+```html
 <div>user input：<input type="text"></div>
 <script src="https://cdn.bootcss.com/socket.io/2.2.0/socket.io.js"></script>
 <script>
@@ -1478,7 +1482,7 @@ document.getElementsByTagName('input')[0].onblur = function() {
 
 2）Nodejs socket后台：
 
-```
+```javascript
 var http = require('http');
 var socket = require('socket.io');
 // 启http服务
@@ -1571,7 +1575,7 @@ Nginx 架构的最顶层是一个 master process，这个 master process 用于�
 
 如果有一个列表，列表之中有大量的列表项，需要在点击列表项的时候响应一个事件：
 
-```
+```html
 <ul id="list">
   <li>item 1</li>
   <li>item 2</li>
@@ -1587,7 +1591,7 @@ Nginx 架构的最顶层是一个 master process，这个 master process 用于�
 
 给上述的例子中每个列表项都绑定事件，在很多时候，需要通过 AJAX 或者用户操作动态的增加或者去除列表项元素，那么在每一次改变的时候都需要重新给新增的元素绑定事件，给即将删去的元素解绑事件；如果用了事件委托就没有这种麻烦了，因为事件是绑定在父层的，和目标元素的增减是没有关系的，执行到目标元素是在真正响应执行事件函数的过程中去匹配的，所以使用事件在动态绑定事件的情况下是可以减少很多重复工作的。
 
-```
+```javascript
 // 来实现把 #list 下的 li 元素的事件代理委托到它的父层元素也就是 #list 上：
 // 给父层元素绑定事件
 document.getElementById('list').addEventListener('click', function (e) {
@@ -1595,7 +1599,7 @@ document.getElementById('list').addEventListener('click', function (e) {
   var event = e || window.event;
   var target = event.target || event.srcElement;
   // 判断是否匹配目标元素
-  if (target.nodeName.toLocaleLowerCase === 'li') {
+  if (target.nodeName.toLocaleLowerCase() === 'li') {
     console.log('the content is: ', target.innerHTML);
   }
 });
@@ -1605,7 +1609,7 @@ document.getElementById('list').addEventListener('click', function (e) {
 
 #### （3）局限性
 
-当然，事件委托也是有局限的。比如 focus、blur 之类的事件没有事件冒泡机制，所以无法实现事件委托；mousemove、mouseout 这样的事件，虽然有事件冒泡，但是只能不断通过位置去计算定位，对性能消耗高，因此也是不适合于事件委托的。
+当然，事件委托也是有局限的。比如 **focus、blur 之类的事件没有事件冒泡机制**，所以无法实现事件委托；**mousemove、mouseout **这样的事件，虽然有事件冒泡，但是只能不断通过位置去计算定位，对性能消耗高，因此也是不适合于事件委托的。
 
 
 
@@ -1626,7 +1630,7 @@ document.getElementById('list').addEventListener('click', function (e) {
 
 场景：给页面的所有的a标签添加click事件，代码如下：
 
-```
+```javascript
 document.addEventListener("click", function(e) {
     if (e.target.nodeName == "A")
         console.log("a");
@@ -1639,7 +1643,7 @@ document.addEventListener("click", function(e) {
 
 这种情况下就可以使用事件委托来处理，将事件绑定在a标签的内部元素上，当点击它的时候，就会逐级向上查找，知道找到a标签为止，代码如下：
 
-```
+```javascript
 document.addEventListener("click", function(e) {
     var node = e.target;
     while (node.parentNode.nodeName != "BODY") {
@@ -1777,7 +1781,7 @@ fs.readFile(__filename, () => {
 
 ![image](https://cdn.nlark.com/yuque/0/2021/png/1500604/1615476641927-75409d91-38a1-4797-aa75-cb02dd95d732.png)
 
-```
+```javascript
 setTimeout(() => {
   console.log('timer21')
 }, 0)
@@ -1792,7 +1796,7 @@ Promise.resolve().then(function() {
 
 最后来看 Node 中的 `process.nextTick`，这个函数其实是独立于 Event Loop 之外的，它有一个自己的队列，当每个阶段完成后，如果存在 nextTick 队列，就会**清空队列中的所有回调函数**，并且优先于其他 microtask 执行。
 
-```
+```javascript
 setTimeout(() => {
  console.log('timer1')
  Promise.resolve().then(function() {
@@ -1825,9 +1829,9 @@ process.nextTick(() => {
 
 
 
-事件触发一般来说会按照上面的顺序进行，但是也有特例，**如果给一个** `**body**` **中的子节点同时注册冒泡和捕获事件，事件触发会按照注册的顺序执行。**
+事件触发一般来说会按照上面的顺序进行，但是也有特例，**如果给一个** `body` **中的子节点同时注册冒泡和捕获事件，事件触发会按照注册的顺序执行。**
 
-```
+```javascript
 // 以下会先打印冒泡然后是捕获
 node.addEventListener(
   'click',
@@ -1853,13 +1857,13 @@ node.addEventListener(
 
 
 
-一般来说，如果只希望事件只触发在目标上，这时候可以使用 `stopPropagation` 来阻止事件的进一步传播。通常认为 `stopPropagation` 是用来阻止事件冒泡的，其实该函数也可以阻止捕获事件。
+一般来说，如果只希望事件只触发在目标上，这时候可以使用 `stopPropagation` 来阻止事件的进一步传播。通常认为 `stopPropagation` 是用来阻止事件冒泡的，其实该函数也可以**阻止捕获事件**。
 
 
 
 `stopImmediatePropagation` 同样也能实现阻止事件，但是还能阻止该事件目标执行别的注册事件。
 
-```
+```javascript
 node.addEventListener(
   'click',
   event => {
@@ -1882,11 +1886,11 @@ node.addEventListener(
 
 ### 1. V8的垃圾回收机制是怎样的
 
-V8 实现了准确式 GC，GC 算法采用了分代式垃圾回收机制。因此，V8 将内存（堆）分为新生代和老生代两部分。
+V8 实现了准确式 GC，GC 算法采用了**分代式垃圾回收机制**。因此，V8 将内存（堆）分为**新生代**和**老生代**两部分。
 
 **（1）新生代算法**
 
-新生代中的对象一般存活时间较短，使用 Scavenge GC 算法。
+新生代中的对象一般存活时间较短，使用 **Scavenge GC 算法**。
 
 
 
@@ -1896,7 +1900,7 @@ V8 实现了准确式 GC，GC 算法采用了分代式垃圾回收机制。因�
 
 **（2）老生代算法**
 
-老生代中的对象一般存活时间较长且数量也多，使用了两个算法，分别是标记清除算法和标记压缩算法。
+老生代中的对象一般存活时间较长且数量也多，使用了两个算法，分别是**标记清除算法**和**标记压缩算法**。
 
 
 
@@ -1909,7 +1913,7 @@ V8 实现了准确式 GC，GC 算法采用了分代式垃圾回收机制。因�
 
 老生代中的空间很复杂，有如下几个空间
 
-```
+```javascript
 enum AllocationSpace {
   // TODO(v8:7464): Actually map this space's memory as read-only.
   RO_SPACE,    // 不变的对象空间
@@ -1934,15 +1938,16 @@ enum AllocationSpace {
 
 
 
-在这个阶段中，会遍历堆中所有的对象，然后标记活的对象，在标记完成后，销毁所有没有被标记的对象。在标记大型对内存时，可能需要几百毫秒才能完成一次标记。这就会导致一些性能上的问题。为了解决这个问题，2011 年，V8 从 stop-the-world 标记切换到增量标志。在增量标记期间，GC 将标记工作分解为更小的模块，可以让 JS 应用逻辑在模块间隙执行一会，从而不至于让应用出现停顿情况。但在 2018 年，GC 技术又有了一个重大突破，这项技术名为并发标记。该技术可以让 GC 扫描和标记对象时，同时允许 JS 运行。
+在这个阶段中，会遍历堆中所有的对象，然后标记活的对象，在标记完成后，销毁所有没有被标记的对象。在标记大型对内存时，可能需要几百毫秒才能完成一次标记。这就会导致一些性能上的问题。为了解决这个问题，2011 年，V8 从 stop-the-world 标记切换到增量标志。在增量标记期间，GC 将标记工作分解为更小的模块，可以让 JS 应用逻辑在模块间隙执行一会，从而不至于让应用出现停顿情况。但在 2018 年，GC 技术又有了一个重大突破，这项技术名为**并发标记**。该技术可以**让 GC 扫描和标记对象时，同时允许 JS 运行**。
 
 
 
-清除对象后会造成堆内存出现碎片的情况，当碎片超过一定限制后会启动压缩算法。在压缩过程中，将活的对象向一端移动，直到所有对象都移动完成然后清理掉不需要的内存。
+清除对象后会造成堆内存出现**碎片**的情况，当碎片超过一定限制后会启动**压缩算法**。在压缩过程中，将活的对象向一端移动，直到所有对象都移动完成然后清理掉不需要的内存。
 
-### 2. 哪些操作会造成内存泄漏？
+### 2. 哪些操作会造成内存泄漏？（4）
 
-- 第一种情况是由于使用未声明的变量，而意外的创建了一个全局变量，而使这个变量一直留在内存中无法被回收。
-- 第二种情况是设置了 setInterval 定时器，而忘记取消它，如果循环函数有对外部变量的引用的话，那么这个变量会被一直留在内存中，而无法被回收。
-- 第三种情况是获取一个 DOM 元素的引用，而后面这个元素被删除，由于我们一直保留了对这个元素的引用，所以它也无法被回收。
-- 第四种情况是不合理的使用闭包，从而导致某些变量一直被留在内存当中。
+- 第一种情况是由于使用**未声明的变量**，而意外的创建了一个**全局变量**，而使这个变量一直留在内存中无法被回收。
+- 第二种情况是设置了 setInterval **定时器**，而忘记取消它，如果循环函数有对外部变量的引用的话，那么这个变量会被一直留在内存中，而无法被回收。
+- 第三种情况是获取**一个 DOM 元素的引用**，而后面这个元素被删除，由于我们一直保留了对这个元素的引用，所以它也无法被回收。
+- 第四种情况是**不合理的使用闭包**，从而导致某些变量一直被留在内存当中。
+- 第五种一些实例
